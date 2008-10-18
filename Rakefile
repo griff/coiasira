@@ -4,16 +4,16 @@ require 'rake/testtask'
 require File.join(File.dirname(__FILE__), 'lib', 'quartz', 'version')
 
 desc "Default Task"
-task :default => [:test]
+task :default => [:package]
 
 desc "Do predistribution stuff"
-task :predist => [:chmod, :changelog, :rdoc]
+task :predist => [:chmod, :rdoc]
 
 
 desc "Make an archive as .tar.gz"
-task :dist => [:fulltest, :predist] do
+task :dist => [:test, :predist] do
   sh "git archive --format=tar --prefix=#{release}/ HEAD^{tree} >#{release}.tar"
-  sh "pax -waf #{release}.tar -s ':^:#{release}/:' RDOX ChangeLog doc"
+  sh "pax -waf #{release}.tar -s ':^:#{release}/:' RDOX doc"
   sh "gzip -f -9 #{release}.tar"
 end
 
@@ -24,12 +24,24 @@ task :chmod do
 end
 
 desc "Run all the tests"
-task :fulltest => [:chmod] do
+task :test => [:chmod] do
   sh "specrb -Ilib:test -w #{ENV['TEST'] || '-a'} #{ENV['TESTOPTS']}"
+end
+
+def gem_version
+  Quartz::VERSION::STRING
+end
+
+def release
+  "quartz-#{gem_version}"
 end
 
 def manifest
   `svn ls -R`.split("\n")
+end
+
+task :install => [:gem] do
+  sh "gem install pkg/#{release}.gem"
 end
 
 begin
@@ -45,7 +57,7 @@ rescue LoadError
 else
   spec = Gem::Specification.new do |s|
     s.name            = "quartz"
-    s.version         = Quartz::VERSION::STRING
+    s.version         = gem_version
     s.platform        = Gem::Platform::RUBY
     s.summary         = "some helpers for running scheduled jobs"
 
@@ -57,11 +69,10 @@ Also see http://quartz.rubyforge.org.
 
     s.files           = manifest + %w(RDOX)
     s.bindir          = 'bin'
-    s.executables     << 'rackup'
+    s.executables     << 'quartz'
     s.require_path    = 'lib'
-    s.autorequire     = 'quartz'
     s.has_rdoc        = true
-    s.extra_rdoc_files = ['README', 'RDOX', 'KNOWN-ISSUES']
+    s.extra_rdoc_files = ['README', 'RDOX']
     s.test_files      = Dir['test/{test,spec}_*.rb']
 
     s.author          = 'Nigel Graham'
