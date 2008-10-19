@@ -15,9 +15,11 @@ end
   
 context = Quartz::Context.new
 if( ARGV.size > 0 )
-  context.action = ARGV.shift
+  action = ARGV.shift
+  puts action
+  context.action = action
   ARGV.each do |arg|
-    [name,value] = arg.split('=')
+    name, value = arg.split('=')
     context.details.data[name] = value
   end
 end

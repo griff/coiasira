@@ -12,6 +12,8 @@ unless defined?(ActiveSupport)
 end
 
 require 'quartz/version'
+require 'quartz/scheduler_error'
+require 'quartz/job_execution_error'
 require 'quartz/job_data'
 require 'quartz/job_detail'
 require 'quartz/trigger'
