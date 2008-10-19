@@ -1,5 +1,5 @@
 module Quartz
-  class Job
+  class JobWrapper
     attr_reader :job_class
     
     def initialize(name, data, file)

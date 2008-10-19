@@ -11,7 +11,12 @@ unless defined?(ActiveSupport)
   end
 end
 
+require 'quartz/version'
+require 'quartz/job_data'
+require 'quartz/job_detail'
+require 'quartz/trigger'
+require 'quartz/context'
 require 'quartz/base'
-require 'quartz/job'
+require 'quartz/job_wrapper'
 require 'quartz/jobs'
 require 'quartz/runner'

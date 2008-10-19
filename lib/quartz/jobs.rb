@@ -51,23 +51,28 @@ module Quartz
         end
         @possible_jobs
       end
+      
+      def has_job?(name)
+        possible_jobs.include?(name)
+      end
             
       def load_job(name)
-        raise NameError unless possible_jobs.include?(name)
+        raise NameError, name unless has_job?(name)
         
         paths = job_paths.select { |path| File.directory?(path) && path != "." }
         path = normalize_paths(paths).find {|load_path| ::File.exists?("#{load_path}/#{name}_job.rb") }
         job_file = "#{path}/#{name}_job.rb"
         data = IO.read(job_file)
-        Job.new(name, data, job_file)
+        JobWrapper.new(name, data, job_file)
       end
     
       def find_class(name)
-        begin
+#        begin
+#          "Quartz::Job::#{name.camelize}Job".constantize
           "#{name.camelize}Job".constantize
-        rescue NameError => boom
-          nil
-        end
+#        rescue NameError => boom
+#          nil
+#        end
       end
     end
   end
