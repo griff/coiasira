@@ -1,4 +1,4 @@
-module Quartz
+module Coiasira
   class Runner
     def has_command?(cmd)
       Jobs.has_job?(cmd)

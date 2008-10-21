@@ -1,4 +1,4 @@
-module Quartz
+module Coiasira
   class JobWrapper
     attr_reader :job_class
     

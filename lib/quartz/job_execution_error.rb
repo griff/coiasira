@@ -1,4 +1,4 @@
-module Quartz
+module Coiasira
   class JobExecutionError < SchedulerError
     attr_accessor :refire, :unschedule_trigger, :unchedule_all_triggers
     

@@ -1,4 +1,4 @@
-module Quartz #:nodoc:
+module Coiasira #:nodoc:
   module VERSION #:nodoc:
     MAJOR = 0
     MINOR = 1

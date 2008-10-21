@@ -1,4 +1,4 @@
-module Quartz
+module Coiasira
   class SchedulerError < StandardError
   end
 end

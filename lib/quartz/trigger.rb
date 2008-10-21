@@ -1,4 +1,4 @@
-module Quartz
+module Coiasira
   class Trigger
     attr_reader :data
 

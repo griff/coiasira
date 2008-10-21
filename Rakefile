@@ -1,7 +1,7 @@
-# Rakefile for Quartz.  -*-ruby-*-
+# Rakefile for Coiasira.  -*-ruby-*-
 require 'rake/rdoctask'
 require 'rake/testtask'
-require File.join(File.dirname(__FILE__), 'lib', 'quartz', 'version')
+require File.join(File.dirname(__FILE__), 'lib', 'coiasira', 'version')
 
 desc "Default Task"
 task :default => [:package]
@@ -29,11 +29,11 @@ task :test => [:chmod] do
 end
 
 def gem_version
-  Quartz::VERSION::STRING
+  Coiasira::VERSION::STRING
 end
 
 def release
-  "quartz-#{gem_version}"
+  "coiasira-#{gem_version}"
 end
 
 def manifest
@@ -56,7 +56,7 @@ rescue LoadError
   # Too bad.
 else
   spec = Gem::Specification.new do |s|
-    s.name            = "quartz"
+    s.name            = "coiasira"
     s.version         = gem_version
     s.platform        = Gem::Platform::RUBY
     s.summary         = "some helpers for running scheduled jobs"
@@ -64,12 +64,12 @@ else
     s.description = <<-EOF
 Something, something.
 
-Also see http://quartz.rubyforge.org.
+Also see http://coiasira.rubyforge.org.
     EOF
 
     s.files           = manifest + %w(RDOX)
     s.bindir          = 'bin'
-    s.executables     << 'quartz'
+    s.executables     << 'coiasira'
     s.require_path    = 'lib'
     s.has_rdoc        = true
     s.extra_rdoc_files = ['README', 'RDOX']
@@ -77,8 +77,8 @@ Also see http://quartz.rubyforge.org.
 
     s.author          = 'Nigel Graham'
     s.email           = 'nigel@maven-group.org'
-    s.homepage        = 'http://quartz.rubyforge.org'
-    s.rubyforge_project = 'quartz'
+    s.homepage        = 'http://coiasira.rubyforge.org'
+    s.rubyforge_project = 'coiasira'
 
     s.add_dependency('activesupport', '= 2.1.0')
   end
@@ -99,7 +99,7 @@ desc "Generate RDoc documentation"
 Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.options << '--line-numbers' << '--inline-source' <<
     '--main' << 'README' <<
-    '--title' << 'Quartz Documentation' <<
+    '--title' << 'Coiasira Documentation' <<
     '--charset' << 'utf-8'
   rdoc.rdoc_dir = "doc"
   rdoc.rdoc_files.include 'README'

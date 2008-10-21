@@ -1,4 +1,4 @@
-module Quartz
+module Coiasira
   module Jobs
     # The root paths which may contain job files
     mattr_accessor :job_paths
@@ -67,7 +67,7 @@ module Quartz
       end
     
       def find_class(name)
-        "Quartz::JobWrapper::#{name.camelize}Job".constantize
+        "Coiasira::JobWrapper::#{name.camelize}Job".constantize
       end
     end
   end

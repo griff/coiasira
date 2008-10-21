@@ -1,4 +1,4 @@
-module Quartz
+module Coiasira
   class Context
     attr_reader :merged, :details, :trigger, :previous_fire_time, :next_fire_time, :scheduled_fire_time
 

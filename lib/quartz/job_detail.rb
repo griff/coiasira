@@ -1,4 +1,4 @@
-module Quartz
+module Coiasira
   class JobDetail
     attr_accessor :name, :group, :description
     attr_reader :data
