@@ -1,5 +1,9 @@
 module Quartz
   class Base
+    # Accepts a logger conforming to the interface of Log4r or the default Ruby 1.8+ Logger class, which is then passed
+    # on to any new database connections made and which can be retrieved on both a class and instance level by calling +logger+.
+    cattr_accessor :logger, :instance_writer => false
+
     class << self
       def process(context)
         new.process(context)
@@ -14,12 +18,12 @@ module Quartz
       @action = self.class.default_action
     end
     
+#    def logger
+#      merged.logger || self.class.logger
+#    end
+    
     def process(context)
-      puts context
-      puts context.respond_to?(:action) if context
-      puts context.action if context && context.respond_to?(:action)
       @action = context.action if context && context.respond_to?(:action) && context.action
-      puts @action
       self.__send__(@action, context)
     end
   end

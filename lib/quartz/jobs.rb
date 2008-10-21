@@ -67,11 +67,7 @@ module Quartz
       end
     
       def find_class(name)
-#        begin
-          "Quartz::JobWrapper::#{name.camelize}Job".constantize
-#        rescue NameError => boom
-#          nil
-#        end
+        "Quartz::JobWrapper::#{name.camelize}Job".constantize
       end
     end
   end

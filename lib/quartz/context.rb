@@ -1,6 +1,6 @@
 module Quartz
   class Context
-    attr_reader :merged, :details, :trigger
+    attr_reader :merged, :details, :trigger, :previous_fire_time, :next_fire_time, :scheduled_fire_time
 
     def initialize
       @details = JobDetail.new
@@ -22,9 +22,6 @@ module Quartz
     end
 
     def action=(value)
-      puts "Setting Action: " +value
-      puts details
-      puts details.data
       details.data.action=value.to_s
     end
 

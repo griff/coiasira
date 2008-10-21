@@ -1,4 +1,4 @@
 module Quartz
-  class SchedulerError < Error
+  class SchedulerError < StandardError
   end
 end

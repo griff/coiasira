@@ -11,16 +11,8 @@ module Quartz
     end
     
     def process(context)
-      unless job_class
-        ret = eval(@data, binding, @file)
-        if @first_run
-          @job_class = Jobs.find_class(@name)
-        end
-        @first_run = false
-      end
-      if job_class
-        job_class.process(context)
-      end
+      @job_class = Jobs.find_class(@name) unless job_class
+      job_class.process(context)
     end
   end
 end
