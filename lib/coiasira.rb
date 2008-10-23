@@ -7,7 +7,11 @@ unless defined?(ActiveSupport)
     require 'active_support'
   rescue LoadError
     require 'rubygems'
-    gem 'activesupport'
+    begin
+      gem 'activesupport'
+    rescue LoadError
+      require 'coiasira/core_ext'
+    end
   end
 end
 
