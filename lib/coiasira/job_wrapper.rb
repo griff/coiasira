@@ -2,11 +2,8 @@ module Coiasira
   class JobWrapper
     attr_reader :job_class
     
-    def initialize(name, data, file)
+    def initialize(name)
       @name = name
-      @data = data
-      @file = file
-      @first_run = true
       @job_class = nil
     end
     

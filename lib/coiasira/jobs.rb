@@ -1,8 +1,23 @@
 module Coiasira
   module Jobs
     # The root paths which may contain job files
-    mattr_accessor :job_paths
-    self.job_paths = []
+    unless defined? @@job_paths
+      @@job_paths = []
+    end
+    
+    def self.job_paths
+      @@job_paths
+    end
+
+    def job_paths
+      @@job_paths
+    end
+    def self.job_paths=(obj)
+      @@job_paths = obj
+    end
+    def job_paths=(obj)
+      @@job_paths = obj
+    end
     
     class << self
     # Returns an array of paths, cleaned of double-slashes and relative path references.
@@ -31,7 +46,6 @@ module Coiasira
       def possible_jobs
         unless @possible_jobs
           @possible_jobs = []
-
           paths = job_paths.select { |path| File.directory?(path) && path != "." }
 
           seen_paths = Hash.new {|h, k| h[k] = true; false}
@@ -58,16 +72,11 @@ module Coiasira
             
       def load_job(name)
         raise NameError, name unless has_job?(name)
-        
-        paths = job_paths.select { |path| File.directory?(path) && path != "." }
-        path = normalize_paths(paths).find {|load_path| ::File.exists?("#{load_path}/#{name}_job.rb") }
-        job_file = "#{path}/#{name}_job.rb"
-        data = IO.read(job_file)
-        JobWrapper.new(name, data, job_file)
+        JobWrapper.new(name)
       end
     
       def find_class(name)
-        "Coiasira::JobWrapper::#{name.camelize}Job".constantize
+        "#{name.camelize}Job".constantize
       end
     end
   end

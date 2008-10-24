@@ -1,6 +1,10 @@
 if defined? Rails::Initializer
-  require 'coiasira/rails/initializer'
   require "#{RAILS_ROOT}/config/environment"
+end
+
+def setup
+  puts "script/job <job_name> [action] [arguments]"
+  exit 1
 end
 
 setup if ARGV.include?('--help') || ARGV.include?('-h') || ARGV.size == 0
@@ -12,7 +16,11 @@ unless runner.has_command?(command)
   puts "No job named '#{command}'"
   setup
 end
-  
+
+log = Logger.new(STDOUT)
+log.level = Logger::DEBUG
+Coiasira::Base.logger = log
+
 context = Coiasira::Context.new
 if( ARGV.size > 0 )
   action = ARGV.shift
@@ -23,8 +31,3 @@ if( ARGV.size > 0 )
   end
 end
 runner.process(command, context)
-
-def setup
-  puts "script/job <job_name> [action] [arguments]"
-  exit 1
-end

@@ -2,7 +2,21 @@ module Coiasira
   class Base
     # Accepts a logger conforming to the interface of Log4r or the default Ruby 1.8+ Logger class, which is then passed
     # on to any new database connections made and which can be retrieved on both a class and instance level by calling +logger+.
-    cattr_accessor :logger, :instance_writer => false
+    unless defined? @@logger
+      @@logger = nil
+    end
+
+    def self.logger
+      @@logger
+    end
+
+    def self.logger=(obj)
+      @@logger = obj
+    end
+
+    def logger
+      @@logger
+    end
 
     class << self
       def process(context)
