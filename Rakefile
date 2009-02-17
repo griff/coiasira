@@ -80,7 +80,7 @@ Also see http://coiasira.rubyforge.org.
     s.homepage        = 'http://coiasira.rubyforge.org'
     s.rubyforge_project = 'coiasira'
 
-    s.add_dependency('activesupport', '= 2.1.0')
+#    s.add_dependency('activesupport', '= 2.1.0')
   end
 
   Rake::GemPackageTask.new(spec) do |p|
