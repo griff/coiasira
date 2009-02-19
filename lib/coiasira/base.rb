@@ -38,7 +38,14 @@ module Coiasira
     
     def process(context)
       @action = context.action if context && context.respond_to?(:action) && context.action
-      self.__send__(@action, context)
+      logger.info("Starting job #{self.class.name.underscore} with action #{@action}")
+      begin
+        self.__send__(@action, context)
+        logger.info("Finished job #{self.class.name.underscore} with action #{@action}")
+      rescue
+        logger.info("Failed job #{self.class.name.underscore} with action #{@action}")
+        raise
+      end
     end
   end
 end
