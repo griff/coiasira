@@ -1,9 +1,3 @@
 module Coiasira #:nodoc:
-  module VERSION #:nodoc:
-    MAJOR = 0
-    MINOR = 1
-    TINY  = 0
-
-    STRING = [MAJOR, MINOR, TINY].join('.')
-  end
+  VERSION = '0.1.0'
 end
