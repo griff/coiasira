@@ -1,25 +1,29 @@
+module Coiasira::AliasMethodChainCoreExt
+  def alias_method_chain(target, feature)
+    # Strip out punctuation on predicates or bang methods since
+    # e.g. target?_without_feature is not a valid method name.
+    aliased_target, punctuation = target.to_s.sub(/([?!=])$/, ''), $1
+    yield(aliased_target, punctuation) if block_given?
+
+    with_method, without_method = "#{aliased_target}_with_#{feature}#{punctuation}", "#{aliased_target}_without_#{feature}#{punctuation}"
+
+    alias_method without_method, target
+    alias_method target, with_method
+
+    case
+      when public_method_defined?(without_method)
+        public target
+      when protected_method_defined?(without_method)
+        protected target
+      when private_method_defined?(without_method)
+        private target
+    end
+  end
+end
+
 module Rails
   class Initializer
-    def self.alias_method_chain(target, feature)
-      # Strip out punctuation on predicates or bang methods since
-      # e.g. target?_without_feature is not a valid method name.
-      aliased_target, punctuation = target.to_s.sub(/([?!=])$/, ''), $1
-      yield(aliased_target, punctuation) if block_given?
-
-      with_method, without_method = "#{aliased_target}_with_#{feature}#{punctuation}", "#{aliased_target}_without_#{feature}#{punctuation}"
-
-      alias_method without_method, target
-      alias_method target, with_method
-
-      case
-        when public_method_defined?(without_method)
-          public target
-        when protected_method_defined?(without_method)
-          protected target
-        when private_method_defined?(without_method)
-          private target
-      end
-    end
+    extend Coiasira::AliasMethodChainCoreExt
     
     def initialize_coiasira
       return unless configuration.frameworks.include?(:coiasira)
@@ -36,26 +40,7 @@ module Rails
   end
   
   class Configuration
-    def self.alias_method_chain(target, feature)
-      # Strip out punctuation on predicates or bang methods since
-      # e.g. target?_without_feature is not a valid method name.
-      aliased_target, punctuation = target.to_s.sub(/([?!=])$/, ''), $1
-      yield(aliased_target, punctuation) if block_given?
-
-      with_method, without_method = "#{aliased_target}_with_#{feature}#{punctuation}", "#{aliased_target}_without_#{feature}#{punctuation}"
-
-      alias_method without_method, target
-      alias_method target, with_method
-
-      case
-        when public_method_defined?(without_method)
-          public target
-        when protected_method_defined?(without_method)
-          protected target
-        when private_method_defined?(without_method)
-          private target
-      end
-    end
+    extend Coiasira::AliasMethodChainCoreExt
 
     attr_accessor :coiasira
 
@@ -75,13 +60,13 @@ module Rails
     end
     alias_method_chain :default_frameworks, :coiasira
     
-    def default_load_paths_with_coiasira
-      paths = default_load_paths_without_coiasira
+    def default_autoload_paths_with_coiasira
+      paths = default_autoload_paths_without_coiasira
       
       # Add the app's job directory
       paths.concat(Dir["#{root_path}/app/jobs/"])
     end
-    alias_method_chain :default_load_paths, :coiasira
+    alias_method_chain :default_autoload_paths, :coiasira
 
     def default_job_paths
       [File.join(root_path, 'app', 'jobs')]
