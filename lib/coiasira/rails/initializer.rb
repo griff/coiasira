@@ -67,7 +67,15 @@ module Rails
       paths.concat(Dir["#{root_path}/app/jobs/"])
     end
     alias_method_chain :default_autoload_paths, :coiasira
-
+    
+    def default_eager_load_paths_with_coiasira
+      paths = default_eager_load_paths_without_coiasira
+      
+      # Add the app's job directory
+      paths.concat(Dir["#{root_path}/app/jobs/"])
+    end
+    alias_method_chain :default_eager_load_paths, :coiasira
+    
     def default_job_paths
       [File.join(root_path, 'app', 'jobs')]
     end
